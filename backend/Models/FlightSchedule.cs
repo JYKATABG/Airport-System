@@ -1,6 +1,7 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.Text.RegularExpressions;
+using backend.DTOs.Models;
 
 namespace backend.Models;
 

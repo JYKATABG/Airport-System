@@ -1,4 +1,6 @@
 using backend.Data;
+using backend.Interfaces;
+using backend.Repositories;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -11,6 +13,9 @@ builder.Services.AddOpenApi();
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+
+builder.Services.AddScoped<IAircraftRepository, AircraftRepository>();
 
 var app = builder.Build();
 
