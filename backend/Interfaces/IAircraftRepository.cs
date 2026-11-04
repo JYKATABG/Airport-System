@@ -1,6 +1,6 @@
 using System;
 using backend.DTOs.Aircraft;
-using backend.DTOs.Models;
+using backend.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace backend.Interfaces;

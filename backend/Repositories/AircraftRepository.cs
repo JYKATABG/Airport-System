@@ -1,8 +1,9 @@
 using System;
 using backend.Data;
-using backend.DTOs.Models;
+using backend.Models;
 using backend.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using backend.DTOs.Aircraft;
 
 namespace backend.Repositories;
 

@@ -2,7 +2,7 @@ using System;
 using System.ComponentModel.DataAnnotations;
 using backend.Models;
 
-namespace backend.DTOs.Models;
+namespace backend.DTOs.Aircraft;
 
 public class Aircraft : IValidatableObject
 {

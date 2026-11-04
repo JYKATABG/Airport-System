@@ -2,7 +2,6 @@ using System;
 using backend.Data;
 using backend.Dtos;
 using backend.DTOs.Aircraft;
-using backend.DTOs.Models;
 using backend.Interfaces;
 using backend.Mappers;
 using Microsoft.AspNetCore.Mvc;

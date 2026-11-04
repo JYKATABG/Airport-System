@@ -1,5 +1,5 @@
 using System;
-using backend.DTOs.Models;
+using backend.DTOs.Aircraft;
 using backend.Models;
 using Microsoft.EntityFrameworkCore;
 
