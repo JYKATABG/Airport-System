@@ -1,7 +1,7 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.Text.RegularExpressions;
-using backend.DTOs.Models;
+using backend.DTOs.Aircraft;
 
 namespace backend.Models;
 
