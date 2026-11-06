@@ -22,7 +22,7 @@ namespace backend.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("backend.Models.Aircraft", b =>
+            modelBuilder.Entity("backend.DTOs.Aircraft.Aircraft", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -41,11 +41,13 @@ namespace backend.Migrations
 
                     b.Property<string>("ModelName")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
 
                     b.Property<string>("RegistrationNumber")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasMaxLength(15)
+                        .HasColumnType("character varying(15)");
 
                     b.Property<double>("TotalFlightHours")
                         .HasColumnType("double precision");
@@ -131,7 +133,7 @@ namespace backend.Migrations
 
             modelBuilder.Entity("backend.Models.FlightSchedule", b =>
                 {
-                    b.HasOne("backend.Models.Aircraft", "Aircraft")
+                    b.HasOne("backend.DTOs.Aircraft.Aircraft", "Aircraft")
                         .WithMany("FlightSchedules")
                         .HasForeignKey("AircraftId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -142,7 +144,7 @@ namespace backend.Migrations
 
             modelBuilder.Entity("backend.Models.MaintenanceLog", b =>
                 {
-                    b.HasOne("backend.Models.Aircraft", "Aircraft")
+                    b.HasOne("backend.DTOs.Aircraft.Aircraft", "Aircraft")
                         .WithMany("MaintenanceLogs")
                         .HasForeignKey("AircraftId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -151,7 +153,7 @@ namespace backend.Migrations
                     b.Navigation("Aircraft");
                 });
 
-            modelBuilder.Entity("backend.Models.Aircraft", b =>
+            modelBuilder.Entity("backend.DTOs.Aircraft.Aircraft", b =>
                 {
                     b.Navigation("FlightSchedules");
 

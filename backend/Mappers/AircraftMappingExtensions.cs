@@ -1,6 +1,7 @@
 using System;
 using backend.Dtos;
 using backend.DTOs.Aircraft;
+using backend.Models;
 using Microsoft.AspNetCore.Http.HttpResults;
 
 namespace backend.Mappers;
