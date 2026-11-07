@@ -1,5 +1,6 @@
 using backend.Data;
 using backend.Interfaces;
+using backend.Middlewares;
 using backend.Repositories;
 using Microsoft.EntityFrameworkCore;
 
@@ -28,6 +29,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseMiddleware<ExceptionHandlingMiddleware>();
 
 app.UseAuthorization();
 
