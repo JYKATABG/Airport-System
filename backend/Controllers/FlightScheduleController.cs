@@ -1,4 +1,5 @@
 using backend.DTOs;
+using backend.Helpers;
 using backend.Interfaces;
 using backend.Mappers;
 using Microsoft.AspNetCore.Mvc;
@@ -17,10 +18,12 @@ public class FlightScheduleController : ControllerBase
         _flightScheduleRepo = flightScheduleRepo;
     }
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<FlightScheduleResponseDto>>> GetAll()
+    public async Task<ActionResult<IEnumerable<FlightScheduleResponseDto>>> GetAll([FromQuery] FlightScheduleQueryObject query)
     {
-        var flightSchedules = await _flightScheduleRepo.GetAllAsync();
+        var flightSchedules = await _flightScheduleRepo.GetAllAsync(query);
+
         var flightSchedulesDTO = flightSchedules.Select(flight => flight.ToDto());
+
         return Ok(flightSchedulesDTO);
     }
 

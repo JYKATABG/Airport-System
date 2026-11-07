@@ -1,5 +1,6 @@
 using System;
 using backend.Data;
+using backend.Helpers;
 using backend.Interfaces;
 using backend.Models;
 using Microsoft.EntityFrameworkCore;
@@ -15,9 +16,36 @@ public class FlightScheduleRepository : IFlightScheduleRepository
         _context = context;
     }
 
-    public async Task<IEnumerable<FlightSchedule>> GetAllAsync()
+    public async Task<IEnumerable<FlightSchedule>> GetAllAsync(FlightScheduleQueryObject query)
     {
-        return await _context.FlightSchedules.ToListAsync();
+        var queryable = _context.FlightSchedules.AsQueryable();
+
+        if (!string.IsNullOrWhiteSpace(query.ArrivalAirport))
+        {
+            queryable = queryable.Where(flight => flight.ArrivalAirport.ToUpper() == query.ArrivalAirport.ToUpper());
+        }
+
+        if (!string.IsNullOrWhiteSpace(query.DepartureAirport))
+        {
+            queryable = queryable.Where(flight => flight.DepartureAirport.ToUpper() == query.DepartureAirport.ToUpper());
+        }
+
+        if (!string.IsNullOrWhiteSpace(query.SortBy))
+        {
+            if (query.SortBy.Equals("Price", StringComparison.OrdinalIgnoreCase))
+            {
+                queryable = query.IsDescending ? queryable.OrderByDescending(f => f.TicketPrice) : queryable.OrderBy(f => f.TicketPrice);
+            }
+
+            if (query.SortBy.Equals("Date", StringComparison.OrdinalIgnoreCase))
+            {
+                queryable = query.IsDescending ? queryable.OrderByDescending(f => f.DepartureTime) : queryable.OrderBy(f => f.DepartureAirport);
+            }
+        }
+
+        var skipNumber = (query.PageNumber - 1) * query.PageSize;
+
+        return await queryable.Skip(skipNumber).Take(query.PageSize).ToListAsync();
     }
     public async Task<FlightSchedule?> GetByIdAsync(int id)
     {
