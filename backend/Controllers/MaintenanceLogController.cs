@@ -1,5 +1,6 @@
 using System;
 using backend.DTOs;
+using backend.Helpers;
 using backend.Interfaces;
 using backend.Mappers;
 using backend.Repositories;
@@ -22,10 +23,12 @@ public class MaintenanceLogController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<MaintenanceLogResponseDto>>> GetAll()
+    public async Task<ActionResult<IEnumerable<MaintenanceLogResponseDto>>> GetAll([FromQuery] MaintenanceLogQueryObject query)
     {
-        var maintenanceLogs = await _maintenanceLogRepo.GetAllAsync();
+        var maintenanceLogs = await _maintenanceLogRepo.GetAllAsync(query);
+
         var maintenanceLogDTOs = maintenanceLogs.Select(log => log.ToDto());
+
         return Ok(maintenanceLogDTOs);
     }
 
