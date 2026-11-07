@@ -12,10 +12,12 @@ namespace backend.Controllers;
 public class FlightScheduleController : ControllerBase
 {
     private readonly IFlightScheduleRepository _flightScheduleRepo;
+    private readonly IAircraftRepository _aircraftRepo;
 
-    public FlightScheduleController(IFlightScheduleRepository flightScheduleRepo)
+    public FlightScheduleController(IFlightScheduleRepository flightScheduleRepo, IAircraftRepository aircraftRepo)
     {
         _flightScheduleRepo = flightScheduleRepo;
+        _aircraftRepo = aircraftRepo;
     }
     [HttpGet]
     public async Task<ActionResult<IEnumerable<FlightScheduleResponseDto>>> GetAll([FromQuery] FlightScheduleQueryObject query)
@@ -42,6 +44,12 @@ public class FlightScheduleController : ControllerBase
     [HttpPost]
     public async Task<ActionResult<FlightScheduleResponseDto>> Create([FromBody] FlightScheduleCreateDto dto)
     {
+        var aircraft = await _aircraftRepo.GetByIdAsync(dto.AircraftId);
+        if (aircraft == null)
+        {
+            return NotFound(new { message = $"Aircraft with Id {dto.AircraftId} not found." });
+        }
+
         var existingFlightSchedule = await _flightScheduleRepo.ExistByFlightNumber(dto.FlightNumber);
         if (existingFlightSchedule)
         {
