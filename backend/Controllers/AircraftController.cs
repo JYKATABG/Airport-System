@@ -2,6 +2,7 @@ using System;
 using backend.Data;
 using backend.Dtos;
 using backend.DTOs.Aircraft;
+using backend.Helpers;
 using backend.Interfaces;
 using backend.Mappers;
 using Microsoft.AspNetCore.Mvc;
@@ -21,10 +22,12 @@ public class AircraftController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<AircraftResponseDto>>> GetAll()
+    public async Task<ActionResult<IEnumerable<AircraftResponseDto>>> GetAll([FromQuery] AircraftQueryObject query)
     {
-        var aircrafts = await _aircraftRepo.GetAllAsync();
+        var aircrafts = await _aircraftRepo.GetAllAsync(query);
+
         var aircraftDTOs = aircrafts.Select(aircraft => aircraft.ToDto());
+
         return Ok(aircraftDTOs);
     }
 
