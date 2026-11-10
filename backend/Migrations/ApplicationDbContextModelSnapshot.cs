@@ -22,7 +22,7 @@ namespace backend.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("backend.DTOs.Aircraft.Aircraft", b =>
+            modelBuilder.Entity("backend.Models.Aircraft", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -131,9 +131,38 @@ namespace backend.Migrations
                     b.ToTable("MaintenanceLogs");
                 });
 
+            modelBuilder.Entity("backend.Models.User", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("PasswordHash")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Role")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Username")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Users");
+                });
+
             modelBuilder.Entity("backend.Models.FlightSchedule", b =>
                 {
-                    b.HasOne("backend.DTOs.Aircraft.Aircraft", "Aircraft")
+                    b.HasOne("backend.Models.Aircraft", "Aircraft")
                         .WithMany("FlightSchedules")
                         .HasForeignKey("AircraftId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -144,7 +173,7 @@ namespace backend.Migrations
 
             modelBuilder.Entity("backend.Models.MaintenanceLog", b =>
                 {
-                    b.HasOne("backend.DTOs.Aircraft.Aircraft", "Aircraft")
+                    b.HasOne("backend.Models.Aircraft", "Aircraft")
                         .WithMany("MaintenanceLogs")
                         .HasForeignKey("AircraftId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -153,7 +182,7 @@ namespace backend.Migrations
                     b.Navigation("Aircraft");
                 });
 
-            modelBuilder.Entity("backend.DTOs.Aircraft.Aircraft", b =>
+            modelBuilder.Entity("backend.Models.Aircraft", b =>
                 {
                     b.Navigation("FlightSchedules");
 

@@ -11,4 +11,6 @@ public class ApplicationDbContext : DbContext
     public DbSet<Aircraft> Aircrafts { get; set; }
     public DbSet<FlightSchedule> FlightSchedules { get; set; }
     public DbSet<MaintenanceLog> MaintenanceLogs { get; set; }
+
+    public DbSet<User> Users { get; set; }
 }
