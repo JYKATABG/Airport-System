@@ -31,10 +31,18 @@ public class AccountController : ControllerBase
             return BadRequest(ModelState);
         }
 
-        var usernameExist = await _context.Users.AnyAsync(u => u.Username == dto.Username);
-        if (usernameExist)
+        var existingUser = await _context.Users.FirstOrDefaultAsync(u => u.Username == dto.Username || u.Email == dto.Email);
+        if (existingUser != null)
         {
-            return Conflict("Username already exist");
+            if (existingUser.Username == dto.Username)
+            {
+                return Conflict("Username already used");
+            }
+
+            if (existingUser.Email == dto.Email)
+            {
+                return Conflict("Email already used");
+            }
         }
 
         var user = new User
@@ -67,7 +75,7 @@ public class AccountController : ControllerBase
             return BadRequest(ModelState);
         }
 
-        var user = await _context.Users.FirstOrDefaultAsync(u => u.Username == dto.Username);
+        var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == dto.Email);
 
         if (user == null)
         {
