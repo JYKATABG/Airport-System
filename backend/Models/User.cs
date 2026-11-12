@@ -9,4 +9,8 @@ public class User
     public string Email { get; set; } = string.Empty;
     public string PasswordHash { get; set; } = string.Empty;
     public string Role { get; set; } = "User"; // | Admin
+    public string? FullName { get; set; }
+    public string? ProfilePicture { get; set; }
+    public string? Address { get; set; }
+    public string? PhoneNumber { get; set; }
 }
