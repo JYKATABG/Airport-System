@@ -52,7 +52,12 @@ namespace backend.Migrations
                     b.Property<double>("TotalFlightHours")
                         .HasColumnType("double precision");
 
+                    b.Property<int>("UserId")
+                        .HasColumnType("integer");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Aircrafts");
                 });
@@ -131,6 +136,45 @@ namespace backend.Migrations
                     b.ToTable("MaintenanceLogs");
                 });
 
+            modelBuilder.Entity("backend.Models.Ticket", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("FlightScheduleId")
+                        .HasColumnType("integer");
+
+                    b.Property<decimal>("Price")
+                        .HasColumnType("numeric");
+
+                    b.Property<DateTime>("PurchasedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("SeatNumber")
+                        .IsRequired()
+                        .HasMaxLength(5)
+                        .HasColumnType("character varying(5)");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.HasIndex("FlightScheduleId", "SeatNumber")
+                        .IsUnique();
+
+                    b.ToTable("Tickets");
+                });
+
             modelBuilder.Entity("backend.Models.User", b =>
                 {
                     b.Property<int>("Id")
@@ -138,6 +182,9 @@ namespace backend.Migrations
                         .HasColumnType("integer");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Address")
+                        .HasColumnType("text");
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -148,6 +195,9 @@ namespace backend.Migrations
 
                     b.Property<string>("PasswordHash")
                         .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("PhoneNumber")
                         .HasColumnType("text");
 
                     b.Property<string>("ProfilePicture")
@@ -172,6 +222,17 @@ namespace backend.Migrations
                     b.ToTable("Users");
                 });
 
+            modelBuilder.Entity("backend.Models.Aircraft", b =>
+                {
+                    b.HasOne("backend.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("backend.Models.FlightSchedule", b =>
                 {
                     b.HasOne("backend.Models.Aircraft", "Aircraft")
@@ -192,6 +253,25 @@ namespace backend.Migrations
                         .IsRequired();
 
                     b.Navigation("Aircraft");
+                });
+
+            modelBuilder.Entity("backend.Models.Ticket", b =>
+                {
+                    b.HasOne("backend.Models.FlightSchedule", "FlightSchedule")
+                        .WithMany()
+                        .HasForeignKey("FlightScheduleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("backend.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("FlightSchedule");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("backend.Models.Aircraft", b =>

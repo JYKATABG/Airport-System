@@ -12,6 +12,8 @@ public class ApplicationDbContext : DbContext
     public DbSet<FlightSchedule> FlightSchedules { get; set; }
     public DbSet<MaintenanceLog> MaintenanceLogs { get; set; }
 
+    public DbSet<Ticket> Tickets { get; set; }
+
     public DbSet<User> Users { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -25,5 +27,12 @@ public class ApplicationDbContext : DbContext
         modelBuilder.Entity<User>()
         .HasIndex(u => u.Username)
         .IsUnique();
+
+        modelBuilder.Entity<Ticket>()
+        .HasIndex(t => new { t.FlightScheduleId, t.SeatNumber })
+        .IsUnique();
+        modelBuilder.Entity<Ticket>()
+        .Property(t => t.Status)
+        .HasConversion<string>();
     }
 }
