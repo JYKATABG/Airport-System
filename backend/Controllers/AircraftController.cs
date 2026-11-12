@@ -5,11 +5,13 @@ using backend.DTOs.Aircraft;
 using backend.Helpers;
 using backend.Interfaces;
 using backend.Mappers;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace backend.Controllers;
 
+[Authorize]
 [ApiController]
 [Route("api/[controller]")]
 public class AircraftController : ControllerBase
@@ -21,6 +23,7 @@ public class AircraftController : ControllerBase
         _aircraftRepo = aircraftRepo;
     }
 
+    [Authorize(Roles = "Admin")]
     [HttpGet]
     public async Task<ActionResult<IEnumerable<AircraftResponseDto>>> GetAll([FromQuery] AircraftQueryObject query)
     {
@@ -44,6 +47,7 @@ public class AircraftController : ControllerBase
         return Ok(aircraft.ToDto());
     }
 
+    [Authorize(Roles = "Admin")]
     [HttpPost]
     public async Task<ActionResult<AircraftResponseDto>> Create([FromBody] AircraftCreateDto dto)
     {
@@ -61,6 +65,7 @@ public class AircraftController : ControllerBase
         return CreatedAtAction(nameof(GetById), new { Id = aircraft.Id }, aircraft.ToDto());
     }
 
+    [Authorize(Roles = "Admin")]
     [HttpPatch("{id:int}")]
     public async Task<ActionResult<AircraftResponseDto>> Update(int id, [FromBody] AircraftUpdateDto dto)
     {
@@ -95,6 +100,7 @@ public class AircraftController : ControllerBase
         return Ok(aircraft.ToDto());
     }
 
+    [Authorize(Roles = "Admin")]
     [HttpDelete("{id:int}")]
     public async Task<ActionResult> Remove(int id)
     {

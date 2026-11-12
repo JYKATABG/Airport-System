@@ -21,6 +21,9 @@ public class Aircraft : IValidatableObject
     public DateTime LastInspectionDate { get; set; } = DateTime.UtcNow;
     public bool IsAirWorthy { get; set; } = true;
 
+    public int UserId { get; set; }
+    public User? User { get; set; }
+
     public ICollection<FlightSchedule> FlightSchedules { get; set; } = new List<FlightSchedule>();
     public ICollection<MaintenanceLog> MaintenanceLogs { get; set; } = new List<MaintenanceLog>();
 
