@@ -15,5 +15,5 @@ public class FlightScheduleUpdateDto
     [Range(15, 1440, ErrorMessage = "Estimated duration Minutes must be between 15 and 1440")]
     public int? EstimatedDurationMinutes { get; set; }
     [Range(1, int.MaxValue, ErrorMessage = "Ticket price cannot be zero or negative")]
-    public double? TicketPrice { get; set; }
+    public decimal? TicketPrice { get; set; }
 }

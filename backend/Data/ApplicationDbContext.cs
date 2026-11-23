@@ -31,8 +31,18 @@ public class ApplicationDbContext : DbContext
         modelBuilder.Entity<Ticket>()
         .HasIndex(t => new { t.FlightScheduleId, t.SeatNumber })
         .IsUnique();
+
         modelBuilder.Entity<Ticket>()
         .Property(t => t.Status)
         .HasConversion<string>();
+
+        modelBuilder.Entity<Ticket>()
+        .Property(t => t.Price)
+        .HasPrecision(18, 2);
+
+        modelBuilder.Entity<FlightSchedule>()
+        .Property(t => t.TicketPrice)
+        .HasPrecision(18, 2);
+
     }
 }

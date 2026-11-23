@@ -11,5 +11,5 @@ public class FlightScheduleResponseDto
     public required string ArrivalAirport { get; set; } = string.Empty;
     public DateTime DepartureTime { get; set; } = DateTime.UtcNow;
     public int EstimatedDurationMinutes { get; set; }
-    public double TicketPrice { get; set; }
+    public decimal TicketPrice { get; set; }
 }

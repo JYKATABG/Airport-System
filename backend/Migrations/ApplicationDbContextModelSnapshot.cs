@@ -91,8 +91,9 @@ namespace backend.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<double>("TicketPrice")
-                        .HasColumnType("double precision");
+                    b.Property<decimal>("TicketPrice")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("numeric(18,2)");
 
                     b.HasKey("Id");
 
@@ -148,7 +149,8 @@ namespace backend.Migrations
                         .HasColumnType("integer");
 
                     b.Property<decimal>("Price")
-                        .HasColumnType("numeric");
+                        .HasPrecision(18, 2)
+                        .HasColumnType("numeric(18,2)");
 
                     b.Property<DateTime>("PurchasedAt")
                         .HasColumnType("timestamp with time zone");
