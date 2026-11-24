@@ -57,12 +57,12 @@ public class AccountController : ControllerBase
         _context.Users.Add(user);
         await _context.SaveChangesAsync();
 
-        var token = _tokenService.CreateToken(user.Username, user.Role);
+        var token = _tokenService.CreateToken(user.Username, user.Role, user.Id);
 
         return Ok(new
         {
-            username = dto.Username,
-            email = dto.Email,
+            username = user.Username,
+            email = user.Email,
             token = token
         });
     }
@@ -91,7 +91,7 @@ public class AccountController : ControllerBase
 
 
 
-        var token = _tokenService.CreateToken(user.Username, user.Role);
+        var token = _tokenService.CreateToken(user.Username, user.Role, user.Id);
 
         return Ok(new
         {

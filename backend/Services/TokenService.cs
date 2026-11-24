@@ -2,13 +2,14 @@ using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using backend.Models;
 using Microsoft.IdentityModel.Tokens;
 
 namespace backend.Services;
 
 public interface ITokenService
 {
-    string CreateToken(string username, string role);
+    string CreateToken(string username, string role, int userId);
 }
 public class TokenService : ITokenService
 {
@@ -21,13 +22,14 @@ public class TokenService : ITokenService
         _key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:SigningKey"]!));
     }
 
-    public string CreateToken(string username, string role)
+    public string CreateToken(string username, string role, int userId)
     {
         var claims = new List<Claim>
         {
             new Claim(JwtRegisteredClaimNames.Sub, username),
             new Claim(ClaimTypes.Name, username),
-            new Claim(ClaimTypes.Role, role)
+            new Claim(ClaimTypes.Role, role),
+            new Claim(ClaimTypes.NameIdentifier, userId.ToString())
         };
 
         var creds = new SigningCredentials(_key, SecurityAlgorithms.HmacSha512Signature);
