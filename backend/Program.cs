@@ -78,6 +78,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 builder.Services.AddScoped<IAircraftRepository, AircraftRepository>();
 builder.Services.AddScoped<IFlightScheduleRepository, FlightScheduleRepository>();
 builder.Services.AddScoped<IMaintenanceLogRepository, MaintenanceLogRepository>();
+builder.Services.AddScoped<ITicketRepository, TicketService>();
 builder.Services.AddScoped<ITokenService, TokenService>();
 
 var app = builder.Build();
