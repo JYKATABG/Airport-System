@@ -4,7 +4,7 @@ using backend.Models;
 
 namespace backend.Interfaces;
 
-public enum TicketError { None, NotFound, FlightNotFound, FlightDeparted, SeatTaken, Forbbiden }
+public enum TicketError { None, NotFound, FlightNotFound, FlightDeparted, SeatTaken, Forbidden }
 
 public record TicketResult(Ticket? Ticket, TicketError Error = TicketError.None);
 public interface ITicketRepository

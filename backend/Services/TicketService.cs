@@ -78,7 +78,7 @@ public class TicketService : ITicketRepository
 
         if (!isAdmin && ticket.UserId != userId)
         {
-            return TicketError.Forbbiden;
+            return TicketError.Forbidden;
         }
 
         if (ticket.FlightSchedule!.DepartureTime <= DateTime.UtcNow)
@@ -103,7 +103,7 @@ public class TicketService : ITicketRepository
 
         if (!isAdmin && ticket.UserId != userId)
         {
-            return new(null, TicketError.Forbbiden);
+            return new(null, TicketError.Forbidden);
         }
 
         return new(ticket);
