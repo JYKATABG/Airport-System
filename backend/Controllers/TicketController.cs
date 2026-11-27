@@ -1,8 +1,10 @@
 using System;
 using System.Security.Claims;
 using backend.DTOs.TicketDTOs;
+using backend.Helpers;
 using backend.Interfaces;
 using backend.Mappers;
+using backend.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -20,13 +22,12 @@ public class TicketController : ControllerBase
         _ticketRepo = ticketRepository;
     }
 
-    private int UserId => int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
     private bool IsAdmin => User.IsInRole("Admin");
 
     [HttpPost]
     public async Task<ActionResult<TicketResponseDto>> Buy([FromBody] TicketCreateDto dto)
     {
-        var result = await _ticketRepo.BuyAsync(UserId, dto);
+        var result = await _ticketRepo.BuyAsync(User.GetUserId(), dto);
 
         return result.Error switch
         {
@@ -41,14 +42,14 @@ public class TicketController : ControllerBase
     [HttpGet]
     public async Task<ActionResult<IEnumerable<TicketResponseDto>>> GetMine()
     {
-        var tickets = await _ticketRepo.GetByUserAsync(UserId);
+        var tickets = await _ticketRepo.GetByUserAsync(User.GetUserId());
         return Ok(tickets.Select(t => t.ToDto()));
     }
 
     [HttpGet("{id:int}")]
     public async Task<ActionResult<TicketResponseDto>> GetById(int id)
     {
-        var result = await _ticketRepo.GetByIdAsync(id, UserId, IsAdmin);
+        var result = await _ticketRepo.GetByIdAsync(id, User.GetUserId(), IsAdmin);
 
         return result.Error switch
         {
@@ -61,7 +62,7 @@ public class TicketController : ControllerBase
     [HttpDelete("{id:int}")]
     public async Task<ActionResult> Cancel(int id)
     {
-        var error = await _ticketRepo.CancelTicket(id, UserId, IsAdmin);
+        var error = await _ticketRepo.CancelTicket(id, User.GetUserId(), IsAdmin);
 
         return error switch
         {

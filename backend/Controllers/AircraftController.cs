@@ -7,7 +7,6 @@ using backend.Interfaces;
 using backend.Mappers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace backend.Controllers;
 
@@ -57,7 +56,7 @@ public class AircraftController : ControllerBase
             return Conflict(new { message = $"Aircraft with registration number '{dto.RegistrationNumber}' already exists." });
         }
 
-        var aircraft = dto.ToAircraftFromCreateDto();
+        var aircraft = dto.ToAircraftFromCreateDto(User.GetUserId());
 
         await _aircraftRepo.CreateAsync(aircraft);
         await _aircraftRepo.SaveChangesAsync();

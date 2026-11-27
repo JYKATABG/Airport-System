@@ -8,7 +8,7 @@ namespace backend.Mappers;
 
 public static class AircraftMappingExtensions
 {
-    public static Aircraft ToAircraftFromCreateDto(this AircraftCreateDto dto)
+    public static Aircraft ToAircraftFromCreateDto(this AircraftCreateDto dto, int userId)
     {
         return new Aircraft
         {
@@ -17,7 +17,8 @@ public static class AircraftMappingExtensions
             TotalFlightHours = dto.TotalFlightHours,
             ManufactureYear = dto.ManufactureYear,
             LastInspectionDate = dto.LastInspectionDate,
-            IsAirWorthy = dto.IsAirWorthy
+            IsAirWorthy = dto.IsAirWorthy,
+            UserId = userId
         };
     }
 
