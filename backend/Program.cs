@@ -10,10 +10,27 @@ using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
 
+var signingKey = builder.Configuration["Jwt:SigningKey"];
+
+if (string.IsNullOrWhiteSpace(signingKey))
+{
+    throw new InvalidOperationException(
+        "The configured key 'Jwt:SigningKey' is missing. Check user secrets (using `dotnet user-secrets list`) or the JWT configuration."
+    );
+}
+
+if (Encoding.UTF8.GetByteCount(signingKey!) < 64)
+{
+    throw new InvalidOperationException(
+        "The 'Jwt:SigningKey' key is too short for HS512. Use at least 64 characters (bytes)."
+    );
+}
+
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
     options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+
 })
 .AddJwtBearer(options =>
 {
@@ -25,7 +42,7 @@ builder.Services.AddAuthentication(options =>
         ValidateIssuerSigningKey = true,
         ValidIssuer = builder.Configuration["Jwt:Issuer"],
         ValidAudience = builder.Configuration["Jwt:Audience"],
-        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:SigningKey"]!))
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(signingKey!))
     };
 
     options.Events = new JwtBearerEvents
@@ -55,7 +72,7 @@ builder.Services.AddAuthentication(options =>
             var customResponse = new
             {
                 status = 403,
-                message = "Access denied. You do not have the necessary administrative rights for this operation."
+                message = "Access denied. You do not have permission to perform this action."
             };
 
             return context.Response.WriteAsJsonAsync(customResponse);
