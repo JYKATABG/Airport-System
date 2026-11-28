@@ -25,7 +25,7 @@ public class AircraftCreateDto : IValidatableObject
         {
             yield return new ValidationResult(
                 "Last inspection date cannot be in the future.",
-                new[] { nameof(ManufactureYear) }
+                new[] { nameof(LastInspectionDate) }
             );
         }
     }
